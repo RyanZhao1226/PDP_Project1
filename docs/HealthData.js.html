@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: HealthData.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: HealthData.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// HealthData.js
+/**
+ * @module HealthData
+ * @description Represents a health data record.
+ */
+export class HealthData {
+    #dataID;
+    #date;
+    #weight;
+    #bloodPressure;
+    #heartRate;
+    #exercise;
+    #sleep;
+    #remarks;
+  
+    /**
+     * Constructor
+     * @param {string} dataID - Unique identifier for the health data record
+     * @param {Date} date - Date of the record
+     * @param {number} weight - User's weight
+     * @param {string} bloodPressure - Blood pressure (e.g., "120/80")
+     * @param {number} heartRate - Heart rate
+     * @param {string} exercise - Exercise info
+     * @param {number} sleep - Sleep duration (hours)
+     * @param {string} remarks - Additional notes
+     */
+    constructor(dataID, date, weight, bloodPressure, heartRate, exercise, sleep, remarks = "") {
+      this.#dataID = dataID;
+      this.#date = date;
+      this.#weight = weight;
+      this.#bloodPressure = bloodPressure;
+      this.#heartRate = heartRate;
+      this.#exercise = exercise;
+      this.#sleep = sleep;
+      this.#remarks = remarks;
+    }
+  
+    /** @return {string} Health data record ID */
+    get dataID() {
+      return this.#dataID;
+    }
+  
+    /** @return {Date} Date of the record */
+    get date() {
+      return this.#date;
+    }
+  
+    /** @return {number} Weight */
+    get weight() {
+      return this.#weight;
+    }
+  
+    /** @return {string} Blood pressure */
+    get bloodPressure() {
+      return this.#bloodPressure;
+    }
+  
+    /** @return {number} Heart rate */
+    get heartRate() {
+      return this.#heartRate;
+    }
+  
+    /** @return {string} Exercise info */
+    get exercise() {
+      return this.#exercise;
+    }
+  
+    /** @return {number} Sleep duration (hours) */
+    get sleep() {
+      return this.#sleep;
+    }
+  
+    /** @return {string} Additional remarks */
+    get remarks() {
+      return this.#remarks;
+    }
+
+    set remarks(newRemarks) {
+      this.#remarks = newRemarks;
+    }
+
+     /**
+     * Validate data
+     * @return {boolean}
+     */
+    validateData() {
+      console.log(`Validating HealthData: ${this.#dataID}`);
+      return true;
+    }
+
+    /**
+     * Update data fields from another HealthData object
+     * @param {HealthData} newData
+     */
+    updateData(newData) {
+      this.#weight = newData.weight;
+      this.#bloodPressure = newData.bloodPressure;
+      this.#heartRate = newData.heartRate;
+      this.#exercise = newData.exercise;
+      this.#sleep = newData.sleep;
+      this.#remarks = newData.remarks;
+      console.log(`HealthData ${this.#dataID} updated.`);
+    }
+
+    /**
+     * Generate a trend analysis
+     * @return {TrendAnalysis}
+     */
+    getTrendAnalysis() {
+      console.log(`Generating trend analysis for ${this.#dataID}`);
+      return {
+        trendGraph: null,
+        analysisText: "No real analysis - placeholder."
+      };
+    }
+}
+  </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-DataManager.html">DataManager</a></li><li><a href="module-Doctor.html">Doctor</a></li><li><a href="module-FitnessEnthusiast.html">FitnessEnthusiast</a></li><li><a href="module-HealthAdvice.html">HealthAdvice</a></li><li><a href="module-HealthData.html">HealthData</a></li><li><a href="module-HealthReminder.html">HealthReminder</a></li><li><a href="module-Patient.html">Patient</a></li><li><a href="module-Report.html">Report</a></li><li><a href="module-ReportBuilder.html">ReportBuilder</a></li><li><a href="module-User.html">User</a></li><li><a href="module-UserFactory.html">UserFactory</a></li></ul><h3>Classes</h3><ul><li><a href="module-DataManager.DataManager.html">DataManager</a></li><li><a href="module-Doctor.Doctor.html">Doctor</a></li><li><a href="module-FitnessEnthusiast.FitnessEnthusiast.html">FitnessEnthusiast</a></li><li><a href="module-HealthAdvice.HealthAdvice.html">HealthAdvice</a></li><li><a href="module-HealthData.HealthData.html">HealthData</a></li><li><a href="module-HealthReminder.HealthReminder.html">HealthReminder</a></li><li><a href="module-Patient.Patient.html">Patient</a></li><li><a href="module-Report.Report.html">Report</a></li><li><a href="module-ReportBuilder.ReportBuilder.html">ReportBuilder</a></li><li><a href="module-User.User.html">User</a></li><li><a href="module-UserFactory.UserFactory.html">UserFactory</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

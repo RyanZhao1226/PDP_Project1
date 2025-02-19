@@ -1,0 +1,33 @@
+{
+  "name": "pdp_project1",
+  "version": "1.0.0",
+  "description": "A comprehensive health data management system designed for fitness enthusiasts, chronic disease patients and healthcare professionals. The system enables users to record, analyze and manage health data such as weight, blood pressure, heart rate, exercise and sleep. Including data visualization, health reminders, etc.",
+  "main": "main.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "jest": {
+    "transform": {}
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "start": "node main.js",
+    "doc": "jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanZhao1226/PDP_Project1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RyanZhao1226/PDP_Project1/issues"
+  },
+  "homepage": "https://github.com/RyanZhao1226/PDP_Project1#readme",
+  "devDependencies": {
+    "eslint": "^9.20.1",
+    "jest": "^29.7.0"
+  }
+}

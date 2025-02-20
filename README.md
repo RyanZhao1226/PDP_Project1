@@ -31,7 +31,7 @@ Business Requirement & Design
 
 ### UML diagram:
 
-[https://www.processon.com/v/67ad07ed21b305197576d32e?cid=660e9a3c4dcd174d8d080674](https://www.processon.com/v/67ad07ed21b305197576d32e?cid=660e9a3c4dcd174d8d080674)
+[https://lucid.app/lucidchart/6e96ad6e-f806-4245-bce5-dbc2ef646ab6/edit?viewport_loc=-1058%2C-136%2C4037%2C1988%2CHWEp-vi-RSFO&amp;invitationId=inv_3a486691-75e4-4b83-9ab6-b73c318c027e]()
 
 ### Mockups
 

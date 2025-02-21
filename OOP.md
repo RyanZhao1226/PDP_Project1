@@ -1,24 +1,622 @@
-# OOP Patterns Explanation and Hypothetical “Break” Examples
+# OOP Explanation and Hypothetical “Break” ExamplesOOP Demonstration
 
 This document provides:
 
-1. **Code examples** of three classes (`DataManager`, `ReportBuilder`, `UserFactory`) that demonstrate good object-oriented design and certain design patterns.
+1. **Code examples** of three classes that demonstrate good object-oriented design SOLID principles and certain design patterns.
 2. **Explanations** of why these are good OOP applications.
-3. **Hypothetical scenarios** showing how each concept could be broken if misused.
+3. **Counter-example** showing how each concept could be broken if misused.
+
+## OOP Pillars
+
+### 1. Abstraction
+
+**Example:**
+
+```javascript
+export class User {
+    #userID;
+    #name;
+    #age;
+    #gender;
+    #contactInfo;
+  
+    /**
+     * Constructor
+     * @param {string} userID - Unique user identifier
+     * @param {string} name - User's name
+     * @param {number} age - User's age
+     * @param {string} gender - User's gender
+     * @param {string} contactInfo - User's contact info
+     */
+    constructor(userID, name, age, gender, contactInfo) {
+      if (new.target === User) {
+        throw new Error("Cannot instantiate abstract class User directly.");
+      }
+    // OOP - Abstract class
+      this.#userID = userID;
+      this.#name = name;
+      this.#age = age;
+      this.#gender = gender;
+      this.#contactInfo = contactInfo;
+    }
+```
+
+**Explanation:**
+
+* `User` is an abstract class that cannot be instantiated directly.
+* This enforces abstraction by ensuring only concrete subclasses (like `Doctor` or `Patient`) can be created.
+* Users of the `User` class don’t need to know how `userID`, `name`, etc., are stored internally.
+
+**Counter-example:**
+
+```javascript
+const user = new User("U123", "John Doe", 30, "Male", "john@example.com");
+// This should not be allowed, as User is meant to be abstract.
+```
 
 ---
 
-## 1. Source Code
+### 2. Encapsulation
 
-Below is the **ES2024 (ES Module)** code for the three classes.They follow the UML class diagrams you provided, and each class demonstrates a particular OOP/design pattern concept:
+**Example:**
 
-1. **`DataManager`**: A **Singleton** class for in-memory data management.
-2. **`ReportBuilder`**: A **Builder** class for step-by-step construction of `Report` objects.
-3. **`UserFactory`**: A **Factory** class for creating different user objects based on a type string.
+```javascript
+export class User {
+    // Private fields (OOP - Encapsulation)
+    #userID;
+    #name;
+    #age;
+    #gender;
+    #contactInfo;
+  
+    /**
+     * Constructor
+     * @param {string} userID - Unique user identifier
+     * @param {string} name - User's name
+     * @param {number} age - User's age
+     * @param {string} gender - User's gender
+     * @param {string} contactInfo - User's contact info
+     */
+    constructor(userID, name, age, gender, contactInfo) {
+      if (new.target === User) {
+        throw new Error("Cannot instantiate abstract class User directly.");
+      }
+```
 
-### DataManager.js
+**Explanation:**
 
-```js
+* The `#userID`, `#name`, and `#contactInfo` fields are  **private** .
+* This means they **cannot** be accessed directly outside the class.
+* Instead, methods like `updateProfile()` must be used to modify data safely.
+
+**Counter-example:**
+
+```javascript
+const user = new User("U123", "John Doe", 30, "Male", "john@example.com");
+user.name = "Jane Doe";  // Direct modification should not be allowed
+```
+
+---
+
+### 3. Inheritance
+
+**Example:**
+
+```javascript
+export class Doctor extends User {
+  #specialization;
+  #licenseNumber;
+  #department;
+// OOP - Inheritance
+
+  /**
+   * Constructor
+   * @param {string} userID
+   * @param {string} name
+   * @param {number} age
+   * @param {string} gender
+   * @param {string} contactInfo
+   * @param {string} specialization - Doctor's specialization
+   * @param {string} licenseNumber - Doctor's license number
+   * @param {string} department - Doctor's department
+   */
+  constructor(userID, name, age, gender, contactInfo, specialization, licenseNumber, department) {
+    super(userID, name, age, gender, contactInfo);
+    this.#specialization = specialization;
+    this.#licenseNumber = licenseNumber;
+    this.#department = department;
+  }
+```
+
+**Explanation:**
+
+* `Doctor` **inherits** from `User`, so it automatically gets `userID`, `name`, `age`, etc.
+* This allows for **code reuse** instead of redefining these properties in every subclass.
+
+**Counter-example:**
+
+```javascript
+export class Doctor {
+  constructor(userID, name, age, gender, contactInfo, specialization, licenseNumber, department) {
+    this.userID = userID;
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+    this.contactInfo = contactInfo;
+    this.specialization = specialization;
+    this.licenseNumber = licenseNumber;
+    this.department = department;
+  }
+}
+```
+
+---
+
+### 4. Polymorphism
+
+**Example:**
+
+```javascript
+/**
+   * OOP - Polymorphism
+   * @override
+   * @return {boolean}
+   */
+  login() {
+    console.log(
+      `Doctor ${this.userID} (specialization: ${this.#specialization}) logged in.`
+    );
+    return super.login();
+  }
+```
+
+**Explanation:**
+
+* The `login()` method is **overridden** in `Doctor`, while `super.login()` ensures base functionality is still used.
+* This allows different subclasses to **customize behavior** while maintaining a common interface.
+
+**Counter-example:**
+
+```javascript
+export class Doctor extends User {
+  login() {
+    console.log("Logging in as Doctor.");
+    // Missing super.login(), losing base functionality
+  }
+}
+```
+
+---
+
+## SOLID Principles
+
+### 1. Single Responsibility Principle(SRP)
+
+**Example:**
+
+```javascript
+// User.js
+// Single Responsibility Principle(SRP)
+/**
+ * @module User
+ * @description Abstract class representing a generic user.
+ */
+
+/**
+ * @abstract
+ */
+export class User {
+    // Private fields (OOP - Encapsulation)
+    #userID;
+    #name;
+    #age;
+    #gender;
+    #contactInfo;
+  
+    /**
+     * Constructor
+     * @param {string} userID - Unique user identifier
+     * @param {string} name - User's name
+     * @param {number} age - User's age
+     * @param {string} gender - User's gender
+     * @param {string} contactInfo - User's contact info
+     */
+    constructor(userID, name, age, gender, contactInfo) {
+      if (new.target === User) {
+        throw new Error("Cannot instantiate abstract class User directly.");
+      }
+    // OOP - Abstract class
+      this.#userID = userID;
+      this.#name = name;
+      this.#age = age;
+      this.#gender = gender;
+      this.#contactInfo = contactInfo;
+    }
+  
+    /** @return {string} User ID */
+    get userID() {
+      return this.#userID;
+    }
+  
+    /** @return {string} User name */
+    get name() {
+      return this.#name;
+    }
+  
+    /** @return {number} User age */
+    get age() {
+      return this.#age;
+    }
+  
+    /** @return {string} User gender */
+    get gender() {
+      return this.#gender;
+    }
+  
+    /** @return {string} User contact info */
+    get contactInfo() {
+      return this.#contactInfo;
+    }
+  
+    /**
+   * User login
+   * @return {boolean}
+   */
+  login() {
+    // Minimal example: just return true
+    console.log(`User ${this.#userID} logged in.`);
+    return true;
+  }
+
+  /**
+   * User logout
+   * @return {void}
+   */
+  logout() {
+    console.log(`User ${this.#userID} logged out.`);
+  }
+
+  /**
+   * Update user profile info
+   * @param {ContactInfo} newInfo
+   * @return {void}
+   */
+  updateProfile(newInfo) {
+    this.#contactInfo = newInfo;
+    console.log(`User ${this.#userID} profile updated.`);
+  }
+
+  /**
+   * View user profile
+   * @return {UserProfile}
+   */
+  viewProfile() {
+    return {
+      userID: this.#userID,
+      name: this.#name,
+      age: this.#age,
+      gender: this.#gender,
+      contactInfo: this.#contactInfo
+    };
+  }
+}
+```
+
+**Explanation:**
+
+* The `Report` class **only** handles report generation.
+* **It does not** send emails, store data, or modify user profiles.
+
+**Counter-example:**
+
+```javascript
+export class Report {
+  generateSummary() {
+    console.log("Generating summary...");
+  }
+
+  sendEmail() {
+    console.log("Sending report via email...");
+  }
+}
+```
+
+---
+
+### 2. Open-Closed Principle(OCP)
+
+**Example:**
+
+```javascript
+// Doctor.js
+// Open-Closed Principle(OCP)
+import { User } from "./User.js";
+import { Report } from "./Report.js";
+
+/**
+ * @module Doctor
+ * @description Represents a doctor, extends User.
+ */
+export class Doctor extends User {
+  #specialization;
+  #licenseNumber;
+  #department;
+// OOP - Inheritance
+
+  /**
+   * Constructor
+   * @param {string} userID
+   * @param {string} name
+   * @param {number} age
+   * @param {string} gender
+   * @param {string} contactInfo
+   * @param {string} specialization - Doctor's specialization
+   * @param {string} licenseNumber - Doctor's license number
+   * @param {string} department - Doctor's department
+   */
+  constructor(userID, name, age, gender, contactInfo, specialization, licenseNumber, department) {
+    super(userID, name, age, gender, contactInfo);
+    this.#specialization = specialization;
+    this.#licenseNumber = licenseNumber;
+    this.#department = department;
+  }
+  // Liskov Substitution Principle(LSP)
+
+  /** @return {string} Specialization */
+  get specialization() {
+    return this.#specialization;
+  }
+
+  /** @return {string} License number */
+  get licenseNumber() {
+    return this.#licenseNumber;
+  }
+
+  /** @return {string} Department */
+  get department() {
+    return this.#department;
+  }
+
+  /**
+   * OOP - Polymorphism
+   * @override
+   * @return {boolean}
+   */
+  login() {
+    console.log(
+      `Doctor ${this.userID} (specialization: ${this.#specialization}) logged in.`
+    );
+    return super.login();
+  }
+
+   /**
+   * View a patient's health records
+   * @param {string} patientID
+   * @return {import("./HealthData.js").HealthData[]}
+   */
+   viewPatientRecords(patientID) {
+    console.log(`Doctor ${this.userID} is viewing records for patient ${patientID}.`);
+    return [];
+  }
+
+    /**
+     * Generate a health report for a patient
+     * @param {string} patientID
+     * @return {Report}
+     */
+    generateReport(patientID) {
+      console.log(`Doctor ${this.userID} generating report for patient ${patientID}.`);
+      const report = new Report("R001", "2025-01-01 ~ 2025-01-31", "Initial Summary", false);
+      return report;
+    }
+
+    /**
+     * Update a patient's health record
+     * @param {string} patientID
+     * @param {import("./HealthData.js").HealthData} data
+     */
+    updatePatientRecord(patientID, data) {
+      console.log(`Doctor ${this.userID} updating record for patient ${patientID} with data:`, data);
+    }
+
+    // Interface Segregation Principle(ISP) - Doctor class does not implement recordWorkoutData()
+}
+```
+
+**Explanation:**
+
+This class **can be extended** to add new features but  **does not require modification** .
+
+**Counter-example:**
+
+```javascript
+export class Doctor {
+  prescribeMedication(patient, medication) {
+    if (medication === "Antibiotics") {
+      console.log("Special handling for antibiotics...");
+    }
+  }
+}
+```
+
+---
+
+### 3. Liskov Substitution Principle (LSP)
+
+**Example:**
+
+```javascript
+// Doctor.js
+// Open-Closed Principle(OCP)
+import { User } from "./User.js";
+import { Report } from "./Report.js";
+
+/**
+ * @module Doctor
+ * @description Represents a doctor, extends User.
+ */
+export class Doctor extends User {
+  #specialization;
+  #licenseNumber;
+  #department;
+// OOP - Inheritance
+
+  /**
+   * Constructor
+   * @param {string} userID
+   * @param {string} name
+   * @param {number} age
+   * @param {string} gender
+   * @param {string} contactInfo
+   * @param {string} specialization - Doctor's specialization
+   * @param {string} licenseNumber - Doctor's license number
+   * @param {string} department - Doctor's department
+   */
+  constructor(userID, name, age, gender, contactInfo, specialization, licenseNumber, department) {
+    super(userID, name, age, gender, contactInfo);
+    this.#specialization = specialization;
+    this.#licenseNumber = licenseNumber;
+    this.#department = department;
+  }
+  // Liskov Substitution Principle(LSP)
+```
+
+**Explanation:**
+
+`Doctor` can **replace** `User` without breaking functionality.
+
+**Counter-example:**
+
+```javascript
+export class User {
+  requestAppointment() {
+    console.log("User requests an appointment.");
+  }
+}
+
+export class Doctor extends User {
+  requestAppointment() {
+    throw new Error("Doctors can’t make their own appointments!");
+  }
+}
+```
+
+---
+
+### 4. Interface Segregation Principle(ISP)
+
+**Example:**
+
+```javascript
+export class FitnessEnthusiast extends User {
+  recordWorkoutData() {
+    console.log("Recording workout data...");
+  }
+}
+```
+
+**Explanation:**
+
+* `FitnessEnthusiast` **only implements** what it needs.
+* It **does not** include unnecessary doctor/patient methods.
+
+**Counter-example:**
+
+```javascript
+export class FitnessEnthusiast extends User {
+  prescribeMedication() {
+    console.log("Prescribing medication..."); 
+  }
+}
+```
+
+---
+
+### 5. Dependency Inversion Principle (DIP)
+
+**Example:**
+
+```javascript
+/**
+ * Demonstrates the Factory design pattern.
+ * Creates user objects based on a type string.
+ */
+// Dependency Inversion Principle(DIP)
+export class UserFactory {
+  /**
+   * Create a user object of the specified type.
+   * @param {string} type - "fitness", "patient", or "doctor"
+   * @param {object} options - An object containing constructor parameters
+   * @return {FitnessEnthusiast | Patient | Doctor}
+   */
+  static createUser(type, options) {
+    switch (type.toLowerCase()) {
+      case "fitness":
+        return new FitnessEnthusiast(
+          options.userID,
+          options.name,
+          options.age,
+          options.gender,
+          options.contactInfo,
+          options.workoutPreferences,
+          options.fitnessGoals
+        );
+
+      case "patient":
+        return new Patient(
+          options.userID,
+          options.name,
+          options.age,
+          options.gender,
+          options.contactInfo,
+          options.medicalHistory,
+          options.conditions,
+          options.medications
+        );
+
+      case "doctor":
+        return new Doctor(
+          options.userID,
+          options.name,
+          options.age,
+          options.gender,
+          options.contactInfo,
+          options.specialization,
+          options.licenseNumber,
+          options.department
+        );
+
+      default:
+        throw new Error(`Unknown user type: ${type}`);
+    }
+  }
+}
+
+```
+
+**Explanation:**
+
+High-level code **does not depend** on low-level details.
+
+**Counter-example:**
+
+```javascript
+export class Hospital {
+  createDoctor() {
+    return new Doctor("D001", "Dr. Smith");
+  }
+}
+```
+
+---
+
+## Design Patterns
+
+### 1. Singleton
+
+**Example:**
+
+```javascript
 // DataManager.js
 /**
  * @module DataManager
@@ -155,9 +753,33 @@ export class DataManager {
     return this.#advices.get(adviceID);
   }
 }
+
 ```
 
-### ReportBuilder.js
+**Explanation:**
+
+* **Encapsulation** : By using private fields and a private constructor, the class hides its internal data structures.
+* **Singleton** : Ensures there is only **one** instance managing the data, preventing inconsistent states or duplication.
+* **OCP** : If we add new data types (e.g., `HealthGoal`), we can add corresponding add/get methods without altering the existing code drastically.
+
+**Counter-example:**
+
+```javascript
+export class DataManager {
+  constructor() {
+    this.users = new Map();
+    this.healthDataRecords = new Map();
+  }
+}
+const dm1 = new DataManager();
+const dm2 = new DataManager();
+```
+
+---
+
+### 2. Builder
+
+**Example:**
 
 ```javascript
 // ReportBuilder.js
@@ -248,9 +870,24 @@ export class ReportBuilder {
   }
 }
 
+
 ```
 
-### UserFactory.js
+**Explanation:**
+
+* **Single Responsibility** : Focuses solely on how to construct a `Report` object step by step, not on the `Report` logic itself.
+* **Open for extension** : We can add new steps (e.g., `setAuthor(authorName)`) without modifying how existing steps work.
+* **Easier Maintenance** : Instead of passing many parameters to a `Report` constructor in a specific order, we can chain calls for clarity.
+
+**Counter-example:**
+
+```javascript
+const report = new Report("R100", "2025-01-01 ~ 2025-01-31", "Monthly Analysis", false);
+```
+
+### 3. Factory
+
+**Example:**
 
 ```javascript
 // UserFactory.js
@@ -317,131 +954,17 @@ export class UserFactory {
     }
   }
 }
-
 ```
 
-## 2. Why These Examples Are Good OOP Applications
+**Explanation:**
 
-1. **DataManager (Singleton)**
-   * **Encapsulation** : By using private fields and a private constructor, the class hides its internal data structures.
-   * **Singleton** : Ensures there is only **one** instance managing the data, preventing inconsistent states or duplication.
-   * **OCP** : If we add new data types (e.g., `HealthGoal`), we can add corresponding add/get methods without altering the existing code drastically.
-2. **ReportBuilder (Builder Pattern)**
-   * **Single Responsibility** : Focuses solely on how to construct a `Report` object step by step, not on the `Report` logic itself.
-   * **Open for extension** : We can add new steps (e.g., `setAuthor(authorName)`) without modifying how existing steps work.
-   * **Easier Maintenance** : Instead of passing many parameters to a `Report` constructor in a specific order, we can chain calls for clarity.
-3. **UserFactory (Factory Pattern)**
-   * **Dependency Inversion Principle (DIP)** : High-level code depends on this abstract factory method rather than directly calling `new Doctor(...)` etc.
-   * **Single Responsibility** : Centralizes user creation logic in one place, so adding new user types only requires updating the factory, not scattered code.
-   * **Polymorphism** : We return different subtypes (`FitnessEnthusiast`, `Patient`, `Doctor`) all referencing the abstract `User` concept.
+* **Dependency Inversion Principle (DIP)** : High-level code depends on this abstract factory method rather than directly calling `new Doctor(...)` etc.
+* **Single Responsibility** : Centralizes user creation logic in one place, so adding new user types only requires updating the factory, not scattered code.
+* **Polymorphism** : We return different subtypes (`FitnessEnthusiast`, `Patient`, `Doctor`) all referencing the abstract `User` concept.
 
-## 3. Hypothetical Examples Breaking Each Concept
+**Counter-example:**
 
-### 3.1 Breaking the **Singleton** Concept
-
-**Good**:
-
+```javascript
+const doctor = new Doctor("D100", "Dr. Chen", 45, "Male", "drchen@example.com", "Cardiology", "LIC987654", "Dept");
+const patient = new Patient("P100", "Alice", 30, "Female", "alice@example.com", ["Flu"], ["BP"], ["Amlodipine"]);
 ```
-// DataManager ensures only one instance
-const dm1 = DataManager.getInstance();
-const dm2 = DataManager.getInstance();
-console.log(dm1 === dm2); // true
-
-```
-
-**Bad** (Hypothetical):
-
-```
-// Suppose we remove the private constructor check:
-constructor() {
-  // no check for DataManager.#instance
-  this.#users = new Map();
-  ...
-}
-
-// Then:
-const dm1 = new DataManager(); // first instance
-const dm2 = new DataManager(); // second instance
-// Now we have 2 different DataManagers => inconsistent data
-
-```
-
-**Result** : We break the Singleton principle by allowing multiple `DataManager` instances, leading to possible data inconsistencies.
-
-### 3.2 Breaking the **Builder** Concept
-
- **Good**:
-
-```
-// Using ReportBuilder
-const builder = new ReportBuilder();
-const report = builder
-  .setReportID("R001")
-  .setDateRange("2025-01-01 ~ 2025-01-31")
-  .setSummary("Monthly Analysis")
-  .setExportStatus(true)
-  .build();
-
-```
-
-**Bad** (Hypothetical):
-
-```
-// Suppose we just do this:
-const report = new Report("R001", "2025-01-01 ~ 2025-01-31", "Monthly Analysis", true, "extraArg1", "extraArg2");
-
-// The constructor is overloaded with many parameters
-// It's easy to forget the order or pass the wrong data type
-// The build process is no longer step-by-step or flexible
-
-```
-
-**Result** : We lose the clarity and step-by-step construction. Adding more fields or optional parameters becomes messy.
-
-### 3.3 Breaking the **Factory** Concept
-
-**Good** :
-
-```
-// Centralized creation logic in UserFactory
-const user = UserFactory.createUser("doctor", { userID: "D123", ... });
-
-```
-
-**Bad** (Hypothetical):
-
-```
-// Suppose we scatter object creation logic across the code:
-function someRandomFunction() {
-  return new Doctor("D123", "Dr. Chen", 45, "Male", {...}, "Cardiology", "LIC999", "Dept");
-}
-
-function anotherRandomFunction() {
-  // We also do new Doctor(...) with different params
-}
-
-// Now if we want to add a new user type "admin",
-// we must update many scattered places instead of just the factory
-
-```
-
-**Result** : We break the principle of centralized object creation. The code becomes harder to maintain or extend with new user types.
-
----
-
-## 4. Summary
-
-* **Why OOP** :
-* We get **modularity** (each class has a clear focus),
-* **extensibility** (adding new subtypes or methods with minimal changes),
-* and **maintainability** (clear boundaries and responsibilities).
-* **Why Patterns** :
-* **Singleton** avoids conflicting data managers,
-* **Builder** simplifies complex object creation,
-* **Factory** decouples creation from usage and follows DIP.
-
-All three examples show good OOP because they **encapsulate** their logic, **extend** easily without major code changes, and **use polymorphism** or standard design patterns to keep the system flexible and maintainable.
-
----
-
- **In summary** , these classes exemplify **strong OOP design** by using recognized patterns (Singleton, Builder, Factory) and adhering to principles like **SRP** (each class focuses on one purpose) and **DIP** (UserFactory). The hypothetical “bad” examples illustrate how ignoring these patterns can lead to more fragile, less maintainable code.
